@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maths JS practice</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+</head>
+<body class="bg-white text-black ma-auto w-full min-h-full grid justify-content-center justify-items-center relative">
+    <nav class="w-[550px] max-w-2xl mb-8">
+        <ul class="flex list-none bg-[hsl(240,100%,95%)]">
+            <li class="w-full h-full text-center"><a class="text-[18px]/[23px] inline-block w-full p-[15px] hover:bg-[hsl(240,100%,90%)]" href="index.html">Welcome</a></li>
+            <li class="w-full h-full text-center"><a class="text-[18px]/[23px] inline-block w-full p-[15px] bg-[hsl(240,100%,85%)]" href="maths.html">Maths</a></li>
+            <li class="w-full h-full text-center"><a class="text-[18px]/[23px] inline-block w-full p-[15px] hover:bg-[hsl(240,100%,90%)]" href="#">Home</a></li>
+            <li class="w-full h-full text-center"><a class="text-[18px]/[23px] inline-block w-full p-[15px] hover:bg-[hsl(240,100%,90%)]" href="#">Home</a></li>
+        </ul>
+    </nav>
+
+    <h1 class="text-3xl font-bold p-3">Maths Practice</h1>
+
+    <div class="calculator p-4">
+        <h2 class="text-xl font-semibold text-center my-2">Calculator</h2>
+        <p class="text-sm my-1.5" >Enter a number to get the square, cube and square root</p>
+        <input class="border border-gray-300 rounded px-2 py-1" type="number" id="num-input" placeholder="Enter a number">
+        <button class="bg-gray-200 border border-gray-400 rounded px-4 py-1 " id="calc-btn">Calculate</button>
+        <button class="bg-gray-200 border border-gray-400 rounded px-4 py-1" id="clear-btn">Clear</button>
+        <p class="text-center" id="result1"></p>
+        <p class="text-center" id="result2"></p>
+        <p class="text-center" id="result3"></p>
+    </div>
+
+    <div class="converter m-8">
+        <h2 class="text-xl font-semibold text-center my-2">Converter</h2>
+        <div class="first-converter converter-section grid grid-cols-2 border border-gray-300 rounded p-4 gap-4 bg-gray-400/10">
+            <div class="conv-container">
+                <select class="w-[115px] bg-gray-200 border border-gray-300 rounded px-2 py-1" name="" id="">
+                    <option>Mile</option>
+                    <option>Kilometre</option>
+                    <option>Metre</option>
+                    <option>Centimetre</option>
+                    <option>Millimetre</option>
+                    <option>Yard</option>
+                    <option>Foot</option>
+                    <option>Inch</option>
+                </select>
+                <input class="border border-gray-300 rounded px-2 py-1" type="number" placeholder="Enter miles">
+            </div>
+            <div class="conv-container">
+                <select class="w-[115px] bg-gray-200 border-gray-300 rounded px-2 py-1" name="" id="">
+                    <option>Kilometre</option>
+                    <option>Mile</option>
+                    <option>Metre</option>
+                    <option>Centimetre</option>
+                    <option>Millimetre</option>
+                    <option>Yard</option>
+                    <option>Foot</option>
+                    <option>Inch</option>
+                </select>
+                <input class="border border-gray-300 rounded px-2 py-1" type="number" placeholder="Enter kilometres">
+            </div>
+        </div>
+        <div class="second-converter converter-section grid grid-cols-2 border border-gray-300 rounded p-4 gap-4 bg-gray-400/10">
+            <div class="conv-container">
+                <select class="w-[115px] bg-gray-200 border border-gray-300 rounded px-2 py-1" name="" id="">
+                    <option>Kilogram</option>
+                    <option>Gram</option>
+                    <option>Milligram</option>
+                    <option>Stone</option>
+                    <option>Pound</option>
+                    <option>Ounce</option>
+                </select>
+                <input class="border border-gray-300 rounded px-2 py-1" type="number" placeholder="Enter kilograms">
+            </div>
+            <div class="conv-container">
+                <select class="w-[115px] bg-gray-200 border border-gray-300 rounded px-2 py-1" name="" id="">
+                    <option>Pound</option>
+                    <option>Kilogram</option>
+                    <option>Gram</option>
+                    <option>Milligram</option>
+                    <option>Stone</option>
+                    <option>Ounce</option>
+                </select>
+                <input class="border border-gray-300 rounded px-2 py-1" type="number" placeholder="Enter grams">
+            </div>
+        </div>
+        <div class="third-converter converter-section grid grid-cols-2 border border-gray-300 rounded p-4 gap-4 bg-gray-400/10">
+            <div class="conv-container">
+                <select class="w-[115px] bg-gray-200 border border-gray-300 rounded px-2 py-1" name="" id="">
+                    <option>Celsius</option>
+                    <option>Fahrenheit</option>
+                    <option>Kelvin</option>
+                </select>
+                <input class="border border-gray-300 rounded px-2 py-1" type="number" placeholder="Enter celsius">
+            </div>
+            <div class="conv-container">
+                <select class="w-[115px] bg-gray-200 border border-gray-300 rounded px-2 py-1" name="" id="">
+                    <option>Fahrenheit</option>
+                    <option>Celsius</option>
+                    <option>Kelvin</option>
+                </select>
+                <input class="border border-gray-300 rounded px-2 py-1" type="number" placeholder="Enter fahrenheit">
+            </div>
+        </div>
+    </div>
+    
+
+    <footer class="fixed bottom-[30px]">
+        <div class="color-choose-label">Select a colour below to change the page's background colour</div>
+        <div class="color-choose-wrapper flex border border-gray-500 rounded mt-2">
+            <div class="w-[100px] h-[50px] cursor-pointer hover:scale-110 transition-transform  bg-[hsl(120,73%,95%)] green"></div>
+            <div class="w-[100px] h-[50px] cursor-pointer hover:scale-110 transition-transform  bg-[hsl(60,100%,95%)] yellow"></div>
+            <div class="w-[100px] h-[50px] cursor-pointer hover:scale-110 transition-transform  bg-[hsl(30,100%,95%)] orange"></div>
+            <div class="w-[100px] h-[50px] cursor-pointer hover:scale-110 transition-transform  bg-[hsl(240,100%,95%)] purple"></div>
+            <div class="w-[100px] h-[50px] cursor-pointer hover:scale-110 transition-transform  bg-[hsl(330,100%,95%)] pink"></div>
+        </div>
+    </footer>
+
+    <script src="maths.js"></script>
+    <!-- <script src="interact.js"></script> -->
+</body>
+</html>

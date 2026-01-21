@@ -1,0 +1,189 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+html {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+body {
+    /* font-family: Arial, sans-serif; */
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    margin: 20px;
+    /* overflow-y: scroll; */
+    margin: 0;
+    position: relative;
+    }
+.square {
+    width: 150px;
+    background-color: lightblue;
+}
+
+.circle {
+    width: 150px;
+    background-color: lightcoral;
+    border-radius: 50%;
+}
+
+div.shape-wrapper > div {
+    aspect-ratio: 1;
+    padding: 20px;
+    margin: 30px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+ }
+
+ .shape-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+ }
+.btn-wrapper {
+    display:flex;
+    justify-content: space-evenly;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    padding: 5px;
+}
+ .btn-wrapper > button {
+    font-size: 1.3rem;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+#btn-swap {
+    font-size: 1.3rem;
+    padding: 10px 20px;
+    margin: 20px;
+    cursor: pointer;
+    width: 80%;
+}
+
+#counter {
+    font-size: 18px;
+    text-align: left;
+    padding: 15px;
+    display: inline-block;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    padding: 20px 0;
+}
+.color-choose-label {
+    font-size: 18px;
+    margin: 15px 0;
+    text-align: center;
+}
+.color-choose-wrapper {
+    display: flex;
+    border: 1px solid grey;
+    width: 500px;
+    margin: 0 auto;
+}
+.color-choose-wrapper > div {
+    height: 50px;
+    width: 100px;
+    border: none;
+    cursor: pointer;
+}
+.color-choose-wrapper > div:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s;
+}
+.green {
+    background-color: hsl(120, 73%, 95%);
+}
+.yellow {
+    background-color: hsl(60, 100%, 94%);
+}
+.orange {
+    background-color: hsl(17, 100%, 94%);
+}
+.pink {
+    background-color: hsl(351, 100%, 96%);
+}
+.purple {
+    background-color: hsl(300, 47%, 95%);
+}
+
+nav {
+    background-color: hsl(240, 100%, 95%);
+    width: 550px;
+    padding: 0;
+    margin: 0 0 40px;
+}
+nav ul {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+nav ul li {
+    font-size: 18px;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+nav ul li:hover {
+    background-color: hsl(240, 100%, 90%);
+}
+nav ul li a {
+    padding: 15px 0;
+    text-decoration: none;
+    color: black;
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 23px;
+}
+nav ul li a.active {
+    background-color: hsl(240, 100%, 85%);
+    /* font-weight: 450; */
+}
+.ad-wrapper {
+    position: fixed;
+    left: 30px;
+    bottom: 120px;
+    width: 30%;
+    z-index: 1;
+    animation: adAnimation 5s 2s 4;
+}
+.ad-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+.hide-ad-button {
+    position: absolute;
+    top: 30px;
+    right:60px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 2px 6px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 3px;
+    z-index: 2;
+    display: none;
+}
+@keyframes adAnimation {
+    0% { transform: translateY(0); }
+    20% { transform: translateY(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateY(10px); }
+    80% { transform: translateX(-10px); }
+    90% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@import "tailwindcss"

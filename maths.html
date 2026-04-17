@@ -13,7 +13,7 @@
             <li class="w-full h-full text-center"><a class="text-[18px]/[23px] inline-block w-full p-[15px] hover:bg-[hsl(240,100%,90%)]" href="index.html">Welcome</a></li>
             <li class="w-full h-full text-center"><a class="text-[18px]/[23px] inline-block w-full p-[15px] bg-[hsl(240,100%,85%)]" href="maths.html">Maths</a></li>
             <li class="w-full h-full text-center"><a class="text-[18px]/[23px] inline-block w-full p-[15px] hover:bg-[hsl(240,100%,90%)]" href="#">Home</a></li>
-            <li class="w-full h-full text-center"><a class="text-[18px]/[23px] inline-block w-full p-[15px] hover:bg-[hsl(240,100%,90%)]" href="#">Home</a></li>
+            <li class="w-full h-full text-center"><a class="text-[18px]/[23px] inline-block w-full p-[15px] hover:bg-[hsl(240,100%,90%)]" href="https://ymk-coder-star.github.io/projects-guide/">Homepage</a></li>
         </ul>
     </nav>
 
@@ -103,9 +103,28 @@
             </div>
         </div>
     </div>
-    
-
-    <footer class="fixed bottom-[30px]">
+    <div class="prime-number-calc">
+        <div class="prime-single-calc">
+            <h2 class="text-xl font-semibold text-center my-2">Prime Number Calculator</h2>
+            <p class="text-sm my-1.5" >Enter a number to check if it's prime or not</p>
+            <input class="border border-gray-300 rounded px-2 py-1" type="number" id="prime-input" placeholder="Enter a number">
+            <button class="bg-gray-200 border border-gray-400 rounded px-4 py-1 " id="prime-btn">Check</button>
+            <button class="bg-gray-200 border border-gray-400 rounded px-4 py-1 hidden" id="check-factors-btn">Check Factors</button>
+            <button class="bg-gray-200 border border-gray-400 rounded px-4 py-1" id="prime-clear-btn">Clear</button>
+            <p class="text-center" id="prime-result"></p>
+            <p class="text-center hidden" id="factors-result"></p>
+        </div>
+        <div class="prime-multiple-calc">
+            <h2 class="text-xl font-semibold text-center my-2">Prime Numbers in a Range</h2>
+            <p class="text-sm my-1.5" >Enter a range to find all prime numbers in that range</p>
+            <input class="border border-gray-300 rounded px-2 py-1" type="number" id="prime-range-start" placeholder="Start of range">
+            <input class="border border-gray-300 rounded px-2 py-1" type="number" id="prime-range-end" placeholder="End of range">
+            <button class="bg-gray-200 border border-gray-400 rounded px-4 py-1 " id="prime-range-btn">Find Primes</button>
+            <button class="bg-gray-200 border border-gray-400 rounded px-4 py-1" id="prime-range-clear-btn">Clear</button>
+            <p class="text-center" id="prime-range-result"></p>
+        </div>
+    </div>
+    <footer class="mt-5">
         <div class="color-choose-label">Select a colour below to change the page's background colour</div>
         <div class="color-choose-wrapper flex border border-gray-500 rounded mt-2">
             <div class="w-[100px] h-[50px] cursor-pointer hover:scale-110 transition-transform  bg-[hsl(120,73%,95%)] green"></div>

@@ -6,11 +6,9 @@ const result2 = document.querySelector('#result2');
 const result3 = document.querySelector('#result3');
 const primeSection = document.querySelector('.prime-number-calc');
 const primeInput = primeSection.querySelector('#prime-input');
-const primeCalcBtn = primeSection.querySelector('#prime-btn');
-const primeFactorsBtn = primeSection.querySelector('#check-factors-btn');
-const primeClearBtn = primeSection.querySelector('#prime-clear-btn');
-const primeRangeCalcBtn = primeSection.querySelector('#prime-range-btn');
-const primeRangeClearBtn = primeSection.querySelector('#prime-range-clear-btn');
+const factorsBtns = primeSection.querySelectorAll('.check-factors-btns');
+let isStopped = true;
+let currentRunId = 0;
 
 calculateButton.addEventListener('click', (event) => {
 	let square = Number(numberInput.value) ** 2;
@@ -21,8 +19,6 @@ calculateButton.addEventListener('click', (event) => {
 
 	let sqrt = Math.sqrt(Number(numberInput.value)).toFixed(2);
 	result3.textContent = ` ${sqrt} is the square root of ${numberInput.value}`;
-
-	console.log(numberInput.value);
 });
 
 clearButton.addEventListener('click', (event) => {
@@ -32,7 +28,7 @@ clearButton.addEventListener('click', (event) => {
 	result3.innerText = '';
 });
 
-// New converter code
+// Converter code (using CoPilot)
 document.querySelectorAll('.converter-section').forEach((section) => {
 	const containers = section.querySelectorAll('.conv-container');
 	if (containers.length === 2) {
@@ -141,7 +137,7 @@ document.querySelectorAll('.converter-section').forEach((section) => {
 	}
 });
 
-//page background color change logic
+//Page background color change logic
 document.querySelectorAll('.color-choose-wrapper > div').forEach((div) => {
 	div.addEventListener('click', () => {
 		let selectedColor = getComputedStyle(div).backgroundColor;
@@ -149,99 +145,278 @@ document.querySelectorAll('.color-choose-wrapper > div').forEach((div) => {
 	});
 });
 
+//Prime number calculations section
 // Prime number logic
+function divisibleByI(num, i) {
+	if (num % i === 0) {
+		return true;
+	}
+}
 const isNotPrime = (number) => {
 	if (number < 2) return false;
 	if (number === 2) return true;
 	for (let i = 2; i <= Math.sqrt(number); i++) {
-		if (number % i === 0) {
+		if (divisibleByI(number, i)) {
 			return true;
 		}
 	}
 	return false;
 };
+//For checking if a number is prime
 function isPrimeSingle() {
+	closePopup();
+	//Declare variables
 	const num = primeInput.value;
 	const primeResult = primeSection.querySelector('#prime-result');
-	if (isNaN(num) || num.includes('.') || num < 1) {
-		primeResult.textContent = 'Please enter a positive integer.';
+	//Verify valid number
+	if (isNaN(num) || num.includes('.') || !num) {
+		primeResult.textContent = 'Please enter an integer.';
 		return;
-	} else {
-		if (isNotPrime(num)) {
-			primeResult.textContent = `${num} is not a prime number.`;
-		} else {
-			primeResult.textContent = `${num} is a prime number.`;
-		}
 	}
-	checkUI();
-}
-function findFactors() {
-	const num = primeInput.value;
-	const factorsResult = primeSection.querySelector('#factors-result');
+	//Check if prime and display accordingly
 	if (isNotPrime(num)) {
-		const factors = [];
-		for (let i = 2; i <= num - 1; i++) {
-			console.log('tested for factors these numbers:' + i);
-			if (num % i === 0) {
-				factors.push(i);
-			}
-		}
-		factorsResult.textContent = `${factors.length} factors of ${num}: ${factors.join(', ')}`;
+		primeResult.textContent = `${num} is not a prime number.`;
+		showFactorsBtn();
+	} else {
+		primeResult.textContent = `${num} is a prime number.`;
+		hideFactorsBtn();
 	}
 }
-
+//For checking all primes in a range
 function isPrimeRange() {
+	closePopup();
+	//Assign elements to variables
 	const start = primeSection.querySelector('#prime-range-start').value;
 	const end = primeSection.querySelector('#prime-range-end').value;
 	const result = primeSection.querySelector('#prime-range-result');
+	//Verify numbers are valid
 	if (
 		isNaN(start) ||
 		isNaN(end) ||
 		start.includes('.') ||
 		end.includes('.') ||
-		start < 1 ||
-		end < 1 ||
+		!start ||
+		!end ||
 		Number(start) > Number(end)
 	) {
-		result.textContent = 'Please enter valid positive integers.';
+		result.textContent = 'Please enter valid integers.';
 		return;
-	} else {
-		let primes = [];
-		for (let i = Number(start); i <= Number(end); i++) {
+	}
+	//Declare values as an object literal
+	const loopParams = {
+		type: 'range',
+		i: start,
+		limit: end,
+		interval: 100000,
+		timerStart: performance.now(),
+		runId: currentRunId,
+		array: [],
+		start,
+	};
+	//Loop through list and display popup
+	isStopped = false;
+	displayPopup();
+	runBlock(loopParams);
+}
+
+//For checking all factors in a non-prime
+function findFactors(form) {
+	//Clear previous results
+	closePopup();
+	primeSection.querySelector('#factors-result').textContent = '';
+	//Declare variables as an object
+	const num = primeInput.value;
+	const loopParams = {
+		type: 'factors',
+		num,
+		i: 2,
+		limit: form === 'short' ? Math.sqrt(num) : num - 1,
+		interval: 100000,
+		timerStart: performance.now(),
+		runId: currentRunId,
+		array: [],
+		form,
+	};
+	//Verify input is non-prime
+	if (!isNotPrime(loopParams.num)) {
+		window.alert(`${loopParams.num} is a prime number`);
+		return;
+	}
+	//Update state, run block and display popup
+	isStopped = false;
+	displayPopup();
+	runBlock(loopParams);
+}
+
+//Logic for dealing with long loops/calculations
+//Block of iterations as part of a loop
+function runBlock(params) {
+	let { type, num, i, limit, interval, runId, array } = params;
+	//Verify process Id
+	if (runId !== currentRunId) {
+		return;
+	}
+	//First block runs
+	for (let count = 1; count <= interval && i <= limit; count++) {
+		if (type === 'factors') {
+			if (divisibleByI(num, i)) {
+				array.push(i);
+			}
+		} else if (type === 'range') {
 			if (!isNotPrime(i)) {
-				primes.push(i);
+				array.push(i);
 			}
 		}
-		result.textContent = `Prime numbers between ${start} and ${end}: ${primes.join(', ')}`;
+		i++;
+	}
+	params.i = i;
+	params.array = array;
+	//Popup display functions
+	if (i % 1000000 < 10000) {
+		updateTimes(params);
+	}
+	updateProgress(params);
+	//Restart the block or finish the loop
+	if (isStopped) {
+		return;
+	}
+	if (i < limit && !isStopped) {
+		setTimeout(() => runBlock(params), 0);
+	} else if (type === 'factors') {
+		finishFactors(params);
+	} else if (type === 'range') {
+		finishRange(params);
 	}
 }
-function checkUI() {
-	primeSection.querySelector('#factors-result').textContent = '';
-	if (isNotPrime(primeSection.querySelector('#prime-input').value)) {
-		primeFactorsBtn.style.display = 'inline-block';
-		primeSection.querySelector('#factors-result').style.display = 'block';
-	} else {
-		primeFactorsBtn.style.display = 'none';
-		primeSection.querySelector('#factors-result').style.display = 'none';
+//Time remaining display to DOM
+function updateTimes({ i, timerStart, limit, start = 0 }) {
+	const timerEnd = performance.now();
+	const elapsed = timerEnd - timerStart;
+	const ratio = (limit - i) / (i - start);
+	const msRemaining = elapsed * ratio;
+	const timeRemaining = displayTime(msRemaining);
+	document.querySelector('.remaining-time').textContent =
+		`Estimated time remaining: ${timeRemaining}`;
+}
+//Progress display to DOM
+function updateProgress({ i, limit, start = 0 }) {
+	let progress = ((i - start) / limit) * 100;
+	document.querySelector('.percentage').textContent =
+		`Progress: ${progress.toFixed(2)}%`;
+	const progressEl = document.querySelector('.progress');
+	progressEl.style.width = `${progress}%`;
+}
+//Display results in DOM
+function finishRange({ start, end, array }) {
+	const result = primeSection.querySelector('#prime-range-result');
+	result.innerHTML = `<strong>${array.length} prime numbers between ${start} and ${end}</strong>: ${array.join(', ')}`;
+	adjustTextSize(array, result);
+	hidePopup();
+}
+function finishFactors({ array, limit, num, form }) {
+	const factorsResult = primeSection.querySelector('#factors-result');
+	let factorsAmt = array.length;
+	if (form === 'short') {
+		factorsAmt = array.length * 2;
+		if (limit % 1 === 0) {
+			factorsAmt--;
+		}
 	}
+	factorsResult.innerHTML = `<strong>${factorsAmt} factors of ${num}</strong>: ${array.join(', ')}`;
+	adjustTextSize(array, factorsResult);
+	hidePopup();
+}
+//Calculate popup hide/show functions
+function displayPopup() {
+	const popup = document.querySelector('.calc-popout');
+	popup.classList.remove('hidden');
+	popup.classList.add('grid');
+}
+function hidePopup() {
+	const popup = document.querySelector('.calc-popout');
+	popup.classList.remove('grid');
+	popup.classList.add('hidden');
+	popup.querySelectorAll('p').forEach((p) => (p.innerText = ''));
+}
+function closePopup() {
+	isStopped = true;
+	currentRunId++;
+	hidePopup();
+}
+//Function to convert time in ms format to hhmmss format
+function displayTime(ms) {
+	const seconds = String(Math.floor(ms / 1000) % 60).padStart(2, 0);
+	const minutes = String(Math.floor(ms / 60000) % 60).padStart(2, 0);
+	const hours = Math.floor(ms / 3600000);
+	return `${hours}:${minutes}:${seconds}`;
+}
+//Function to adjust text size of an output based on the length of the array
+function adjustTextSize(array, outputEl) {
+	if (array.length > 128) {
+		outputEl.style.fontSize = '14px';
+	}
+	if (array.length > 512) {
+		outputEl.style.fontSize = '12px';
+	}
+	if (array.length > 1024) {
+		outputEl.style.fontSize = '10px';
+	}
+	if (array.length > 4096) {
+		outputEl.style.fontSize = '8px';
+	}
+	if (array.length > 8192) {
+		outputEl.style.fontSize = '6px';
+	}
+	if (array.length > 16384) {
+		outputEl.style.fontSize = '5.5px';
+	}
+}
+//Prime display functions
+function showFactorsBtn() {
+	factorsBtns.forEach((btn) => (btn.style.display = 'inline-block'));
+	primeSection.querySelector('#factors-result').style.display = 'block';
+	primeSection.querySelector('#factors-result').textContent = '';
+}
+function hideFactorsBtn() {
+	factorsBtns.forEach((btn) => (btn.style.display = 'none'));
+	primeSection.querySelector('#factors-result').style.display = 'none';
+	primeSection.querySelector('#factors-result').textContent = '';
 }
 function clearPrime() {
+	closePopup();
 	primeInput.value = '';
 	primeSection.querySelector('#prime-result').textContent = '';
-	primeSection.querySelector('#factors-result').textContent = '';
-	checkUI();
+	hideFactorsBtn();
 }
 function clearPrimeRange() {
+	closePopup();
 	primeSection.querySelector('#prime-range-start').value = '';
 	primeSection.querySelector('#prime-range-end').value = '';
 	primeSection.querySelector('#prime-range-result').textContent = '';
 }
-
+//Function to initialize event listeners
 function init() {
-	primeCalcBtn.addEventListener('click', isPrimeSingle);
-	primeFactorsBtn.addEventListener('click', findFactors);
-	primeClearBtn.addEventListener('click', clearPrime);
-	primeRangeCalcBtn.addEventListener('click', isPrimeRange);
-	primeRangeClearBtn.addEventListener('click', clearPrimeRange);
+	primeInput.addEventListener('input', hideFactorsBtn);
+	primeSection
+		.querySelector('#prime-btn')
+		.addEventListener('click', isPrimeSingle);
+	primeSection
+		.querySelector('#check-factors-btn')
+		.addEventListener('click', () => findFactors('short'));
+	primeSection
+		.querySelector('#check-all-factors-btn')
+		.addEventListener('click', () => findFactors('long'));
+	primeSection
+		.querySelector('#prime-clear-btn')
+		.addEventListener('click', clearPrime);
+	primeSection
+		.querySelector('#prime-range-btn')
+		.addEventListener('click', isPrimeRange);
+	primeSection
+		.querySelector('#prime-range-clear-btn')
+		.addEventListener('click', clearPrimeRange);
+	document.querySelector('.popup-close').addEventListener('click', closePopup);
 }
-init();
+
+//Code which runs when page loads
+document.addEventListener('DOMContentLoaded', init);
